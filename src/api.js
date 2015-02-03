@@ -31,23 +31,27 @@ exports.readFile = function(path, opts, callback) {
     , fail = wrapFail(callback);
 
   fs.getFile(path, function(err, fileEntry) {
-    fileEntry.file(function(file) {
-      var reader = new FileReader();
+    if (err) {
+      fail(err);
+    } else {
+      fileEntry.file(function (file) {
+        var reader = new FileReader();
 
-      reader.onloadend = function(evt) {
-        success(evt.target.result);
-      };
+        reader.onloadend = function (evt) {
+          success(evt.target.result);
+        };
 
-      reader.onerror = function(err) {
-        fail(err);
-      };
+        reader.onerror = function (err) {
+          fail(err);
+        };
 
-      if (opts.encoding === 'utf8') {
-        reader.readAsText(file);
-      } else {
-        reader.readAsDataURL(file);
-      }
-    }, fail);
+        if (opts.encoding === 'utf8') {
+          reader.readAsText(file);
+        } else {
+          reader.readAsDataURL(file);
+        }
+      }, fail);
+    }
   });
 };
 
