@@ -41,6 +41,7 @@ exports.supportsFileSystem = function() {
  * @return   {Function}
  */
 exports.wrapSuccess = function(callback) {
+  if (!callback) return function() {};
   return function() {
     var args = [null].concat(Array.prototype.slice.call(arguments));
 
@@ -55,6 +56,7 @@ exports.wrapSuccess = function(callback) {
  * @return   {Function}
  */
 exports.wrapFail = function(callback) {
+  if (!callback) return function() {};
   return function() {
     var args = Array.prototype.slice.call(arguments)
       , e = args[0];
